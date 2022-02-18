@@ -6,8 +6,6 @@ services:
     image: mysql
     env_file:
       - .env
-    volumes:
-      - ./var/mysql/data:/var/lib/mysql:rw,delegated
     ports:
       - "3306:3306"
     environment:
@@ -24,7 +22,7 @@ services:
       dockerfile: docker/app/Dockerfile
       target: app
     depends_on:
-        -   db
+        - db
     volumes:
       - ./:/app:delegated
 

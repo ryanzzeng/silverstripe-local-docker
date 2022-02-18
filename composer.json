@@ -34,12 +34,18 @@
         }
     },
     "config": {
-        "process-timeout": 600
+        "process-timeout": 600,
+        "allow-plugins": {
+            "composer/installers": true,
+            "silverstripe/recipe-plugin": true,
+            "silverstripe/vendor-plugin": true
+        }
     },
     "scripts": {
         "linux:start-docker:rebuild": [
             "Composer\\Config::disableProcessTimeout",
-            "USER_UID=$(id -u) USER_GID=$(id -g) docker-compose -f docker-compose.yaml -f docker-compose.linux.yaml up --build -d"
+            "cp .env.example .env",
+            "USER_UID=$(id -u) USER_GID=$(id -g) docker-compose -f docker-compose.yaml -f docker-compose.linux.yaml up --build"
         ]
     },
     "prefer-stable": true,
