@@ -44,16 +44,19 @@
     "scripts": {
         "linux:start-docker:rebuild": [
             "Composer\\Config::disableProcessTimeout",
-            "USER_UID=$(id -u) USER_GID=$(id -g) docker-compose -f docker-compose.yaml -f docker-compose.linux.yaml up --build"
+            "@setup:env",
+            "USER_UID=$(id -u) USER_GID=$(id -g) docker-compose -f docker-compose.yaml -f docker-compose.linux.yaml up --build -d"
         ],
         "linux:setup:docker": [
             "docker exec app composer setup:_"
         ],
         "setup:_": [
-            "cp .env.example .env",
             "@composer install",
             "chmod 777 .env",
             "vendor/bin/sake dev/build"
+        ],
+        "setup:env": [
+            "cp .env.example .env"
         ]
     },
     "prefer-stable": true,

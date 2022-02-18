@@ -72,9 +72,6 @@ ADD . /app
 RUN composer install --no-dev --no-interaction --no-progress --optimize-autoloader --no-cache
 
 
-# vendor expose for silverstripe: ensure that the public/resources folder exists
-#RUN /usr/bin/composer vendor-expose copy
-
 ##########################################
 # STAGE: app
 ##########################################
