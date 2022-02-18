@@ -51,8 +51,7 @@ RUN set -xe \
     && apk del .build-deps \
     && rm -rf /tmp/* /usr/local/lib/php/doc/* /var/cache/apk/*
 
-# php.ini and entrypoint
-COPY docker/app/entrypoints /usr/local/bin/
+# php.ini
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 COPY docker/app/conf.d/custom.ini $PHP_INI_DIR/conf.d/custom.ini
 
@@ -80,9 +79,6 @@ RUN composer install --no-dev --no-interaction --no-progress --optimize-autoload
 # STAGE: app
 ##########################################
 FROM base AS app
-
-
-ENTRYPOINT ["/bin/sh", "/app/docker/app/entrypoints/app.sh"]
 
 EXPOSE 9000
 
