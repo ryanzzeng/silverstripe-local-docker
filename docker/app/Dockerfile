@@ -62,25 +62,28 @@ ENV PATH="/root/.composer/vendor/bin:${PATH}"
 
 # prevent the reinstallation of vendors at every changes in the source code
 COPY composer.json composer.lock ./
-RUN set -eux; \
-	composer install --prefer-dist --optimize-autoloader --no-scripts --no-progress --no-suggest; \
-	composer clear-cache
+RUN composer install --no-dev --no-interaction --no-scripts --no-autoloader --no-progress --no-cache
+
 
 # define workdir and copy application files
 WORKDIR /app
 ADD . /app
 
+# Finish the composer install and generate an autoloader now that the full app is copied in
+RUN composer install --no-dev --no-interaction --no-progress --optimize-autoloader --no-cache
+
+
 # vendor expose for silverstripe: ensure that the public/resources folder exists
-RUN /usr/bin/composer vendor-expose copy
+#RUN /usr/bin/composer vendor-expose copy
 
 ##########################################
 # STAGE: app
 ##########################################
 FROM base AS app
 
+
+ENTRYPOINT ["/bin/sh", "/app/docker/app/entrypoints/app.sh"]
+
 EXPOSE 9000
-
-entrypoint ["/bin/sh", "/app/docker/app/entrypoints/app.sh", "--optimize"]
-
 
 

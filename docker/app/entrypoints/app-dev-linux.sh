@@ -1,5 +1,7 @@
 #!/usr/bin/env sh
 
+echo "this is app-dev-linux.sh"
+
 # Create a user within the container with the required USER_UID
 # Note: Not really required for PHP FPM but it makes the container look nicer when you exec into it.
 adduser -u ${USER_UID} developer -D || true

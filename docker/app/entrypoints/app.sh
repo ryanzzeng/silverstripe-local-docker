@@ -1,6 +1,8 @@
 #!/usr/bin/env sh
 
-set -e
+echo "this is app.sh"
+
+set -xe
 
 /usr/bin/composer install --prefer-dist --optimize-autoloader --no-scripts --no-progress --no-suggest;
 
