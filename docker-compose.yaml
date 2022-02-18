@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  db:
+    container_name: db
+    image: mysql
+    env_file:
+      - .env
+    volumes:
+      - ./var/mysql/data:/var/lib/mysql:rw,delegated
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${SS_DATABASE_PASSWORD}
+      MYSQL_PASSWORD: ${SS_DATABASE_PASSWORD}
+      MYSQL_USER: ${SS_DATABASE_USERNAME}
+      MYSQL_DATABASE: ${SS_DATABASE_NAME}
+      MYSQL_INITDB_SKIP_TZINFO: 0
+
+  app:
+    container_name: app
+    build:
+      context: .
+      dockerfile: docker/app/Dockerfile
+      target: app
+    depends_on:
+        -   db
+    volumes:
+      - ./:/app:delegated
+
+  nginx:
+    container_name: nginx
+    build:
+      context: .
+      dockerfile: docker/nginx/Dockerfile
+      args:
+        FPM_HOST: app
+    restart: unless-stopped
+    environment:
+      PHP_UPSTREAM: 'app'
+    depends_on:
+      - app
+    ports:
+      - "80:80"

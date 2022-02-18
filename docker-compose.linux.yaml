@@ -1,0 +1,16 @@
+##
+# Run me: docker-compose -f docker-compose.yaml -f docker-compose.linux.yaml up --build
+#
+# Note: If your uid and/or your gid is/are not 1000, then run this (or even better, export USER_UID and USER_GID in your rc file)
+# USER_UID=$(id -u) USER_GID=$(id -g) docker-compose -f docker-compose.yaml -f docker-compose.linux.yaml up --build
+##
+
+version: '3.8'
+services:
+    app:
+        entrypoint: "/app/docker/app/entrypoints/app-dev-linux.sh"
+        environment:
+            USER_UID: ${USER_UID:-1000}
+            USER_GID: ${USER_GID:-1000}
+        volumes:
+            - ./:/app
