@@ -47,6 +47,10 @@
             "@setup:env",
             "USER_UID=$(id -u) USER_GID=$(id -g) docker-compose -f docker-compose.yaml -f docker-compose.linux.yaml up --build -d"
         ],
+        "linux:start-docker": [
+            "Composer\\Config::disableProcessTimeout",
+            "USER_UID=$(id -u) USER_GID=$(id -g) docker-compose -f docker-compose.yaml -f docker-compose.linux.yaml up -d"
+        ],
         "linux:setup:docker": [
             "docker exec app composer setup:_"
         ],
